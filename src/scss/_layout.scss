@@ -1,0 +1,85 @@
+body {
+  font-family: Poppins, sans-serif;
+  margin: 0 100px 0 100px;
+}
+
+$secondary: #b6845e;
+$tertiary: #cd8d34;
+
+.btn-secondary {
+  background-color: $secondary;
+  border-color: $secondary;
+}
+
+.btn-secondary:hover,
+.btn:active:focus,
+.btn:focus-visible {
+  background-color: $tertiary;
+  border-color: $tertiary;
+}
+
+.media-gallery img {
+  width: 100%;
+  object-fit: cover;
+  height: 400px;
+}
+
+.profile-image {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  row-gap: 10px;
+}
+
+/* .media-image img {
+  width: 100%;
+  object-fit: cover;
+  height: 400px;
+} */
+
+.my-listing-item {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.my-listing-item h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.listing-details {
+  display: flex;
+  align-items: center;
+}
+
+.listing-media {
+  flex: 0 0 200px;
+}
+
+.listing-description {
+  flex-grow: 1;
+  margin-left: 1rem;
+}
+
+.media-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.modal {
+  background-color: #c0c0c0;
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find&Bid | Listings</title>
+    <meta name="description" content="List of all the auctions available.">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/dist/css/index.css">
+    <script src="/js/pages/listings.js" type="module" defer></script>
+    <script src="/js/pages/logout.js" type="module" defer></script>
+    <script src="/js/listing.js/createListing.js" type="module" defer></script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/html/listings.html">Find&Bid</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/html/listings.html">Listings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/html/myProfile.html">My Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="openCreateListingModalBtn" class="nav-link active" style="cursor: pointer;">Create a
+                                Listing</a>
+                        </li>
+                    </ul>
+                    <a id="logout">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                            class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+                            <path fill-rule="evenodd"
+                                d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+                        </svg></a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Create Listing Modal -->
+    <div id="createListingModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <!-- Modal content -->
+            <form id="createListingForm">
+                <input type="text" id="listingTitle" placeholder="Title" required><br>
+                <input type="date" id="listingDeadline" required><br>
+                <textarea id="listingDescription" placeholder="Description" required></textarea><br>
+                <div class="mb-3">
+                    <label for="listingImageInput" class="form-label">Image URL</label>
+                    <input type="text" class="form-control" id="listingImageInput">
+                </div>
+                <!-- Buttons for form submission and cancel -->
+                <button type="submit">Post</button>
+                <button type="button" id="cancelCreateListingBtn">Cancel</button>
+            </form>
+
+        </div>
+    </div>
+    <main>
+        <h1>Listings</h1>
+        <div id="listings-container" class="row"></div>
+        <button id="load-more-button">Load More</button>
+
+    </main>
+</body>
+
+</html>
