@@ -2,7 +2,7 @@ import { API_AUTH, API_BASE, API_KEY_URL, API_LOGIN } from "../../index.js";
 import { saveToken } from "../auth/token.js";
 
 export async function login(email, password) {
-  if (!email.endsWith("@noroff.no") && !email.endsWith("@stud.noroff.no")) {
+  if (!email.endsWith("@stud.noroff.no")) {
     return false;
   }
 

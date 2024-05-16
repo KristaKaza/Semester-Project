@@ -28,9 +28,9 @@ document
 
 // REGISTER FUNCTION
 export async function register(name, email, password) {
-  if (!email.endsWith("@noroff.no") && !email.endsWith("@stud.noroff.no")) {
+  if (!email.endsWith("@stud.noroff.no")) {
     throw new Error(
-      "Only email addresses ending in @noroff.no or @stud.noroff.no are allowed for registration"
+      "Only email addresses ending in @stud.noroff.no are allowed for registration"
     );
   }
 

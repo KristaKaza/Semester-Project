@@ -12,7 +12,7 @@ export const API_MY_LISTINGS = (name) =>
   `${API_BASE}/auction/profiles/${name}/listings`;
 export const API_LISTINGS = API_BASE + "/auction/listings"; //get
 export const API_SINGLE_LISTING = (postId) =>
-  `${API_BASE}/auction/listings/${postId}?_bids=true`;
+  `${API_BASE}/auction/listings/${postId}?_bids=true&_seller=true`;
 export const API_CREATE_LISTING = "/auction/listings"; //post
 export const API_BID = (postId) =>
   `${API_BASE}/auction/listings/${postId}/bids?_bids=true`;
