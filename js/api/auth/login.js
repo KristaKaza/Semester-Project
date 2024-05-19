@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const password = event.target[1].value; // Assume password is the second input
       login(email, password).then((loggedIn) => {
         if (loggedIn) {
-          window.location.href = "/listings.html";
+          window.location.href = "/index.html";
         } else {
           alert("Invalid email or password. Please try again.");
         }

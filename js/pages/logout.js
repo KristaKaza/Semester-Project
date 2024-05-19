@@ -8,5 +8,5 @@ function logout() {
 document.getElementById("logout").addEventListener("click", function (event) {
   event.preventDefault();
   logout();
-  window.location.href = "/listings.html";
+  window.location.href = "/index.html";
 });
