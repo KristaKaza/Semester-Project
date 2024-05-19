@@ -1,6 +1,7 @@
 import { makeBid } from "../api/auth/listings.js/makeBid.js";
 import { getPostDetails } from "../api/auth/listings.js/singlePost.js";
 import { getProfileByName } from "../api/auth/profiles/profile.js";
+import { getUserCredits } from "../api/auth/profiles/credits-api.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
   try {
@@ -12,16 +13,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     displayPostDetails(postDetails);
     displayBids(postDetails.data.bids ?? []);
 
-    // Fetch the current user's profile to display username
     const userName = localStorage.getItem("userName");
-
     if (userName) {
-      const profile = await getProfileByName(userName);
-      const sellerUsernameElement = document.getElementById("seller-username");
-
-      // Check if seller username element exists
-      if (sellerUsernameElement) {
-        sellerUsernameElement.textContent = `Seller: ${profile.name}`;
+      try {
+        const profile = await getProfileByName(userName);
+        const sellerUsernameElement =
+          document.getElementById("seller-username");
+        if (sellerUsernameElement) {
+          sellerUsernameElement.textContent = `Seller: ${profile.name}`;
+        }
+      } catch (profileError) {
+        console.error("Error fetching profile data:", profileError);
+        displayErrorMessage("Failed to fetch user profile details.");
       }
     } else {
       console.error("Failed to retrieve username from localStorage");
@@ -66,13 +69,70 @@ function displayPostDetails(postDetails) {
     const mediaGallery = document.createElement("div");
     mediaGallery.classList.add("media-gallery");
 
-    postDetails.data.media.forEach((media) => {
+    if (postDetails.data.media.length > 1) {
+      // Create slider container
+      const sliderContainer = document.createElement("div");
+      sliderContainer.classList.add("slider-container");
+
+      // Create slide track
+      const slideTrack = document.createElement("div");
+      slideTrack.classList.add("slide-track");
+
+      // Create slides
+      postDetails.data.media.forEach((media) => {
+        const slide = document.createElement("div");
+        slide.classList.add("slide");
+        const mediaItem = document.createElement("img");
+        mediaItem.setAttribute("src", media.url);
+        mediaItem.setAttribute("alt", "Listing Image");
+        mediaItem.classList.add("media-image");
+        slide.appendChild(mediaItem);
+        slideTrack.appendChild(slide);
+      });
+
+      // Append track to container
+      sliderContainer.appendChild(slideTrack);
+
+      // Create navigation buttons
+      const prevButton = document.createElement("button");
+      prevButton.classList.add("slider-button", "prev-button");
+      prevButton.innerHTML = "&#10094;"; // Left arrow
+
+      const nextButton = document.createElement("button");
+      nextButton.classList.add("slider-button", "next-button");
+      nextButton.innerHTML = "&#10095;"; // Right arrow
+
+      sliderContainer.appendChild(prevButton);
+      sliderContainer.appendChild(nextButton);
+
+      mediaGallery.appendChild(sliderContainer);
+
+      // Add event listeners for navigation buttons
+      let currentIndex = 0;
+      const slides = slideTrack.children;
+      const totalSlides = slides.length;
+
+      const showSlide = (index) => {
+        slideTrack.style.transform = `translateX(-${index * 100}%)`;
+      };
+
+      prevButton.addEventListener("click", () => {
+        currentIndex = currentIndex > 0 ? currentIndex - 1 : totalSlides - 1;
+        showSlide(currentIndex);
+      });
+
+      nextButton.addEventListener("click", () => {
+        currentIndex = currentIndex < totalSlides - 1 ? currentIndex + 1 : 0;
+        showSlide(currentIndex);
+      });
+    } else {
       const mediaItem = document.createElement("img");
-      mediaItem.setAttribute("src", media.url);
+      mediaItem.setAttribute("src", postDetails.data.media[0].url);
       mediaItem.setAttribute("alt", "Listing Image");
       mediaItem.classList.add("media-image");
       mediaGallery.appendChild(mediaItem);
-    });
+    }
+
     cardBody.appendChild(mediaGallery);
   }
 
@@ -149,6 +209,19 @@ function displayPostDetails(postDetails) {
       if (bidAmount <= lastBidAmount) {
         errorMessageElement.textContent =
           "The amount of your bid is not enough. Please bid more than the last bid for this auction";
+        return;
+      }
+
+      // Fetch user's credits
+      const userName = localStorage.getItem("userName");
+      try {
+        const userCredits = await getUserCredits(userName);
+        if (bidAmount > userCredits.credits) {
+          errorMessageElement.textContent = "Not enough credits.";
+          return;
+        }
+      } catch (error) {
+        errorMessageElement.textContent = "Not enough credits.";
         return;
       }
 

@@ -20,13 +20,15 @@
     <script src="/js/pages/listings.js" type="module" defer></script>
     <script src="/js/pages/logout.js" type="module" defer></script>
     <script src="/js/listing.js/createListing.js" type="module" defer></script>
+        <script src="/js/api/auth/login.js" type="module" defer></script>
+
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/html/listings.html">Find&Bid</a>
+                <a class="navbar-brand" href="/listings.html">Find&Bid</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -35,16 +37,21 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/html/listings.html">Listings</a>
+                            <a class="nav-link active" aria-current="page" href="/listings.html">Listings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/html/myProfile.html">My Profile</a>
+                            <a class="nav-link active" href="/html/myProfile.html">My Profile</a>
                         </li>
                         <li class="nav-item">
                             <a id="openCreateListingModalBtn" class="nav-link active" style="cursor: pointer;">Create a
                                 Listing</a>
                         </li>
                     </ul>
+                    <form class="d-flex" onsubmit="searchListings(); return false;">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                            id="searchQuery">
+                        <button class="btn btn-outline-primary me-3" type="submit">Search</button>
+                    </form>
                     <a id="logout">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                             class="bi bi-box-arrow-right" viewBox="0 0 16 16">
@@ -78,8 +85,8 @@
         </div>
     </div>
     <main>
-        <h1>Listings</h1>
-        <div id="listings-container" class="row"></div>
+        <h1 class="text-center mt-4">Listings</h1>
+        <div id="listings-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3"></div>
         <button id="load-more-button">Load More</button>
 
     </main>

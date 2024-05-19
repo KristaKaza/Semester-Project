@@ -1,5 +1,4 @@
 import { getAllListings } from "../api/auth/listings.js/listings-api.js";
-import { getProfileByName } from "../api/auth/profiles/profile.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
   let page = 1;
@@ -19,7 +18,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
 
-  // Initial load
   loadMoreButton.click();
 });
 
@@ -28,18 +26,14 @@ async function displayListings(listings) {
   listingsContainer.innerHTML = "";
   listingsContainer.classList.add("row");
 
-  listings.forEach(async (listing) => {
+  for (const listing of listings) {
     const postCard = document.createElement("div");
-    postCard.classList.add("col-md-5", "col-sm-10", "m-2");
-    postCard.addEventListener("click", () => {
-      window.location.href = `/html/singlePost.html?id=${listing.id}&title=${listing.title}`;
-    });
+    postCard.classList.add("col");
     listingsContainer.appendChild(postCard);
 
     const cardInner = document.createElement("div");
     cardInner.classList.add("card", "card-body");
     postCard.appendChild(cardInner);
-    cardInner.style.cursor = "pointer";
 
     // Title
     const title = document.createElement("h2");
@@ -47,26 +41,81 @@ async function displayListings(listings) {
     title.innerHTML = listing.title;
     cardInner.appendChild(title);
 
-    // Deadline Date
-    const deadlineDate = document.createElement("p");
-    deadlineDate.innerHTML = `Ends at: ${formatDeadline(listing.endsAt)}`;
-    cardInner.appendChild(deadlineDate);
-
     // Media Gallery
-    if (listing.media && listing.media.length > 0) {
-      const mediaGallery = document.createElement("div");
-      mediaGallery.classList.add("media-gallery");
+    const mediaGallery = document.createElement("div");
+    mediaGallery.classList.add("media-gallery");
 
+    if (listing.media && listing.media.length > 1) {
+      // Create slider container
+      const sliderContainer = document.createElement("div");
+      sliderContainer.classList.add("slider-container");
+
+      // Create slide track
+      const slideTrack = document.createElement("div");
+      slideTrack.classList.add("slide-track");
+
+      // Create slides
       listing.media.forEach((media) => {
+        const slide = document.createElement("div");
+        slide.classList.add("slide");
         const mediaItem = document.createElement("img");
         mediaItem.setAttribute("src", media.url);
         mediaItem.setAttribute("alt", media.alt);
         mediaItem.classList.add("media-image");
-        mediaGallery.appendChild(mediaItem);
+        slide.appendChild(mediaItem);
+        slideTrack.appendChild(slide);
       });
 
-      cardInner.appendChild(mediaGallery);
+      // Append track to container
+      sliderContainer.appendChild(slideTrack);
+
+      // Create navigation buttons
+      const prevButton = document.createElement("button");
+      prevButton.classList.add("slider-button", "prev-button");
+      prevButton.innerHTML = "&#10094;";
+
+      const nextButton = document.createElement("button");
+      nextButton.classList.add("slider-button", "next-button");
+      nextButton.innerHTML = "&#10095;";
+
+      sliderContainer.appendChild(prevButton);
+      sliderContainer.appendChild(nextButton);
+
+      mediaGallery.appendChild(sliderContainer);
+
+      // Add event listeners for navigation buttons
+      let currentIndex = 0;
+      const slides = slideTrack.children;
+      const totalSlides = slides.length;
+
+      const showSlide = (index) => {
+        slideTrack.style.transform = `translateX(-${index * 100}%)`;
+      };
+
+      prevButton.addEventListener("click", () => {
+        currentIndex = currentIndex > 0 ? currentIndex - 1 : totalSlides - 1;
+        showSlide(currentIndex);
+      });
+
+      nextButton.addEventListener("click", () => {
+        currentIndex = currentIndex < totalSlides - 1 ? currentIndex + 1 : 0;
+        showSlide(currentIndex);
+      });
+    } else {
+      const mediaItem = document.createElement("img");
+      mediaItem.setAttribute(
+        "src",
+        listing.media.length > 0 ? listing.media[0].url : "/default-image.jpg"
+      );
+      mediaItem.setAttribute(
+        "alt",
+        listing.media.length > 0 ? listing.media[0].alt : "Default Image"
+      );
+      mediaItem.classList.add("media-image");
+      mediaGallery.appendChild(mediaItem);
     }
+
+    cardInner.appendChild(mediaGallery);
 
     // Description
     const description = document.createElement("p");
@@ -78,36 +127,34 @@ async function displayListings(listings) {
     bidCount.innerHTML = `Bids: ${listing._count.bids}`;
     cardInner.appendChild(bidCount);
 
-    // View More Button
-    const viewMoreButton = document.createElement("button");
-    viewMoreButton.classList.add("btn", "btn-secondary");
-    viewMoreButton.innerHTML = "View More";
-    viewMoreButton.addEventListener("click", () => {
-      window.location.href = `/html/singlePost.html?id=${listing.id}&title=${listing.title}`;
-    });
-    cardInner.appendChild(viewMoreButton);
+    // Deadline Date
+    const deadlineDate = document.createElement("p");
+    deadlineDate.innerHTML = `Ends at: ${formatDeadline(listing.endsAt)}`;
+    cardInner.appendChild(deadlineDate);
 
-    // Display the username
-    const seller = document.createElement("p");
-    seller.classList.add("name");
-
-    // Extract the username from the listing data
-    const username = listing.username;
-    if (username) {
-      try {
-        // Fetch the profile using the extracted username
-        const profile = await getProfileByName(username);
-        seller.textContent = ` ${profile.userName}`;
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-        seller.textContent = "Unknown";
-      }
-    } else {
-      seller.textContent = "Unknown";
-    }
-    cardInner.appendChild(seller);
-  });
+  const viewMoreButton = document.createElement("button");
+  viewMoreButton.classList.add("btn", "btn-secondary");
+  viewMoreButton.textContent = "View More";
+ viewMoreButton.addEventListener("click", () => {
+   if (isLoggedIn()) {
+     window.location.href = `/html/singlePost.html?id=${
+       listing.id
+     }&title=${encodeURIComponent(listing.title)}`;
+   } else {
+     window.location.href =
+       "/html/login.html?redirect=" +
+       encodeURIComponent(
+         `/html/singlePost.html?id=${listing.id}&title=${listing.title}`
+       );
+   }
+ });
+  cardInner.appendChild(viewMoreButton);
+  }
 }
+function isLoggedIn() {
+  return !!localStorage.getItem("accessToken");
+}
+
 
 function formatDeadline(dateString) {
   const deadline = new Date(dateString);
@@ -120,3 +167,5 @@ function formatDeadline(dateString) {
   };
   return deadline.toLocaleDateString("en-US", options);
 }
+
+

@@ -14,7 +14,7 @@ document
       const registered = await register(name, email, password);
       if (registered) {
         // Redirect to login page upon successful registration
-        window.location.href = "/index.html";
+        window.location.href = "/html/login.html";
       } else {
         // Hide any previous error messages
         document.getElementById("error-message").style.display = "none";
