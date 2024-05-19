@@ -10,16 +10,16 @@ export function load(key) {
 
 // Function to save the access token to local storage
 export function saveToken(token) {
-  localStorage.setItem("token", token);
+  localStorage.setItem("accessToken", token);
 }
 
 // Function to load the access token from local storage
 export function loadToken() {
-  return localStorage.getItem("token");
+  return localStorage.getItem("accessToken");
 }
 
 export function removeToken() {
-  return localStorage.removeItem(token);
+  return localStorage.removeItem("accessToken");
 }
 
 // Retrieve the access token when making API requests

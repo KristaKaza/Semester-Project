@@ -1,10 +1,12 @@
 import { API_MY_PROFILE, API_KEY } from "../../../index.js";
-import { loadToken } from "../../auth/token.js";
+import { loadToken } from "../token.js";
 
 export async function getProfileByName(userName) {
   const token = loadToken();
 
-  const response = await fetch(API_MY_PROFILE(userName), {
+  // Log the URL and Headers for debugging
+  const url = API_MY_PROFILE(userName);
+  const response = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
       "X-Noroff-API-Key": API_KEY,

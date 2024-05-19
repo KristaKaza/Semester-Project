@@ -18,7 +18,7 @@ export async function login(email, password) {
   }
 
   if (isLoggedIn()) {
-    return true; // Already logged in
+    return true;
   }
 
   try {
@@ -41,12 +41,9 @@ export async function login(email, password) {
     saveToken(accessToken);
     localStorage.setItem("profile", JSON.stringify(profile));
     localStorage.setItem("logged-in-email", email);
+    localStorage.setItem("userName", profile.name);
 
-    console.log("Login successful:", profile);
-
-    // Optionally fetch and store the API key if needed
     await fetchApiKey(accessToken);
-
     return true;
   } catch (error) {
     alert("Login failed: " + error.message);
@@ -80,8 +77,8 @@ document.addEventListener("DOMContentLoaded", function () {
   if (loginForm) {
     loginForm.addEventListener("submit", function (event) {
       event.preventDefault();
-      const email = event.target[0].value; // Assume email is the first input
-      const password = event.target[1].value; // Assume password is the second input
+      const email = event.target[0].value;
+      const password = event.target[1].value; 
       login(email, password).then((loggedIn) => {
         if (loggedIn) {
           window.location.href = "/index.html";

@@ -1,12 +1,22 @@
+import { loadToken } from "../api/auth/token.js";
 import { getProfileByName } from "../api/auth/profiles/profile.js";
 import { getUserListings } from "../api/auth/listings.js/myListings.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
   try {
-    const userName = localStorage.getItem("userName");
+    const profile = JSON.parse(localStorage.getItem("profile"));
+    if (!profile || !profile.name) {
+      throw new Error("No userName found in profile");
+    }
+    const userName = profile.name;
+    const token = loadToken();
 
-    const profile = await getProfileByName(userName);
-    displayProfile(profile);
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const profileData = await getProfileByName(userName);
+    displayProfile(profileData);
 
     const listings = await getUserListings(userName);
     displayListings(listings);
@@ -46,20 +56,6 @@ function displayProfile(profile) {
   profileContainer.appendChild(creditsElement);
 }
 
-// Define formatDeadline function
-function formatDeadline(dateString) {
-  const deadline = new Date(dateString);
-  const options = {
-    hour: "numeric",
-    minute: "numeric",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  return deadline.toLocaleDateString("en-US", options);
-}
-
-// Rest of the code
 function displayListings(listings) {
   const listingsContainer = document.getElementById("my-listings-container");
   listingsContainer.innerHTML = "";
@@ -97,4 +93,16 @@ function generateMediaGallery(media) {
     return `<img src="${item.url}" alt="${item.alt}" class="media-image">`;
   });
   return mediaItems.join("");
+}
+
+function formatDeadline(dateString) {
+  const deadline = new Date(dateString);
+  const options = {
+    hour: "numeric",
+    minute: "numeric",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return deadline.toLocaleDateString("en-US", options);
 }
