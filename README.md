@@ -3,7 +3,7 @@
 ## Description
 Find&Bid, an auction website where users can find listings, view their credit, place a bid, create an account or log in if they are already registered, view all bids in a specific listing and the deadline of the auction.
 
-## Build width
+## Build with
 - HTML
 - Bootstrap / SCSS
 - JavaScript
