@@ -26,9 +26,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.error("Error fetching profile data:", profileError);
         displayErrorMessage("Failed to fetch user profile details.");
       }
-    } else {
-      console.error("Failed to retrieve username from localStorage");
-    }
+    } 
   } catch (error) {
     console.error("Error fetching and displaying post details:", error);
     displayErrorMessage("Failed to load post details.");
