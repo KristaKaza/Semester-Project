@@ -63,11 +63,12 @@
         </nav>
     </header>
     <!-- Create Listing Modal -->
-<div id="createListingModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div id="createListingModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createListingModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Create a Listing</h5>
+                <h5 class="modal-title" id="createListingModalLabel">Create a Listing</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Modal content -->
@@ -99,17 +100,20 @@
         </div>
     </div>
 </div>
+
+
     <main>
         <h1 class="text-center mt-4">Listings</h1>
         <div id="listings-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3"></div>
         <button id="load-more-button">Load More</button>
 
     </main>
-</body>
 <footer class="bg-body-tertiary">
     <div class="d-flex justify-content-between m-3 p-3">
         <h3>Find&Bid</h3>
         <p>Copyright 2024 ©</p>
     </div>
 </footer>
+</body>
+
 </html>

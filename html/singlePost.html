@@ -46,11 +46,6 @@
                                 Listing</a>
                         </li>
                     </ul>
-                    <form class="d-flex" id="searchForm">
-                        <input class="form-control me-2" type="search" placeholder="Search" id="searchQuery"
-                            aria-label="Search">
-                        <button class="btn btn-outline-primary me-3" type="submit">Search</button>
-                    </form>
                     <a id="logout">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                             class="bi bi-box-arrow-right" viewBox="0 0 16 16">
@@ -64,52 +59,54 @@
         </nav>
     </header>
     <!-- Create Listing Modal -->
-    <div id="createListingModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create a Listing</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <!-- Modal content -->
-                <div class="modal-body">
-                    <form id="createListingForm">
-                        <div class="mb-3">
-                            <label for="listingTitle" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="listingTitle" placeholder="Title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="listingDeadline" class="form-label">Deadline</label>
-                            <input type="date" class="form-control" id="listingDeadline" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="listingDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="listingDescription" placeholder="Description"
-                                required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="listingImageInput" class="form-label">Image URL</label>
-                            <input type="text" class="form-control" id="listingImageInput">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Post</button>
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                    </form>
-                </div>
+<div id="createListingModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createListingModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createListingModalLabel">Create a Listing</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Modal content -->
+            <div class="modal-body">
+                <form id="createListingForm">
+                    <div class="mb-3">
+                        <label for="listingTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="listingTitle" placeholder="Title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="listingDeadline" class="form-label">Deadline</label>
+                        <input type="date" class="form-control" id="listingDeadline" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="listingDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="listingDescription" placeholder="Description"
+                            required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="listingImageInput" class="form-label">Image URL</label>
+                        <input type="text" class="form-control" id="listingImageInput">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Post</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
     <div id="post-details-container"></div>
     <div id="bids-container" class="card my-3">
 
     </div>
     </div>
-</body>
 <footer class="bg-body-tertiary">
     <div class="d-flex justify-content-between m-3 p-3">
         <h3>Find&Bid</h3>
         <p>Copyright 2024 ©</p>
     </div>
 </footer>
+</body>
 </html>
