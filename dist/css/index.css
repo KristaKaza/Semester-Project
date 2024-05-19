@@ -21,7 +21,7 @@ body {
   border-color: #cd8d34;
 }
 
-.media-gallery img {
+.media-gallery img, .card img {
   width: 100%;
   object-fit: cover;
   height: 400px;
@@ -43,44 +43,49 @@ body {
   row-gap: 10px;
 }
 
-.my-listing-item {
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.my-listing-item h3 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
-}
-
-.listing-details {
-  display: flex;
-  align-items: center;
-}
-
-.listing-media {
-  flex: 0 0 200px;
-}
-
-.listing-description {
-  flex-grow: 1;
-  margin-left: 1rem;
-}
-
-.media-image {
-  max-width: 100%;
-  height: auto;
+#my-listings-container {
+  cursor: pointer;
 }
 
 .modal {
-  opacity: 1 !important;
-  filter: alpha(opacity=100) !important;
-  background: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: rgba(99, 99, 99, 0.492);
+}
+
+.modal-backdrop {
+  background: rgba(139, 139, 139, 0.389);
+}
+
+.modal-dialog {
+  max-width: 500px;
+  margin: 1.75rem auto;
+}
+
+.modal-header .close {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal-content {
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  border-top: none;
+  justify-content: flex-end;
+}
+
+.modal-header {
+  border-bottom: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .welcome {

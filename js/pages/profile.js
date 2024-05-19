@@ -62,25 +62,31 @@ function displayListings(listings) {
 
   listings.forEach((listing) => {
     const listingItem = document.createElement("div");
-    listingItem.classList.add(
-      "col-md-5",
-      "col-sm-10",
-      "m-2",
-      "my-listing-item"
-    );
+    listingItem.classList.add("col-md-4", "col-sm-6", "mb-4");
+
     listingItem.innerHTML = `
-      <h3>${listing.title}</h3>
-      <div class="listing-details">
-        <div class="listing-media">
-          ${generateMediaGallery(listing.media)}
+      <div class="card h-100">
+        <img src="${
+          listing.media[0]?.url || "default-image.jpg"
+        }" class="card-img-top" alt="${listing.title}">
+        <div class="card-body">
+          <h5 class="card-title">${listing.title}</h5>
+          <p class="card-text">${listing.description}</p>
         </div>
-        <div class="listing-description">
-          <p>${listing.description}</p>
-          <p>Bids: ${listing._count.bids}</p>
-          <p>Ends at: ${formatDeadline(listing.endsAt)}</p>
+        <div class="card-footer">
+          <small class="text-muted">Ends at: ${formatDeadline(
+            listing.endsAt
+          )}</small>
         </div>
       </div>
     `;
+
+    listingItem.addEventListener("click", () => {
+      window.location.href = `/html/singlePost.html?id=${
+        listing.id
+      }&title=${encodeURIComponent(listing.title)}`;
+    });
+
     listingsContainer.appendChild(listingItem);
   });
 }

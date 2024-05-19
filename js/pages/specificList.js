@@ -258,7 +258,12 @@ function displayBids(bids) {
     bidWrapper.classList.add("bid-wrapper", "mb-2", "p-2", "border", "rounded");
 
     const bidElement = document.createElement("div");
-    bidElement.classList.add("d-flex", "justify-content-between", "p-2");
+    bidElement.classList.add(
+      "d-flex",
+      "justify-content-between",
+      "p-2",
+      "flex-wrap"
+    );
 
     const bidderName = bid.bidder?.name;
     const bidAmount = bid.amount;

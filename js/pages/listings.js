@@ -1,5 +1,6 @@
 import { getAllListings } from "../api/auth/listings.js/listings-api.js";
 import { searchListings } from "../api/auth/search.js";
+import { isAuthenticated, redirectToLogin } from "../api/auth/token.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
   let page = 1;
@@ -32,6 +33,32 @@ document.addEventListener("DOMContentLoaded", async function () {
         displayListings(listings);
       } catch (error) {
         console.error("Error fetching search results:", error);
+      }
+    });
+  }
+
+  // Event listener for My Profile link
+  const myProfileLink = document.getElementById("myProfileLink");
+  if (myProfileLink) {
+    myProfileLink.addEventListener("click", function (event) {
+      if (!isAuthenticated()) {
+        event.preventDefault();
+        redirectToLogin("/html/myProfile.html");
+      }
+    });
+  }
+
+  // Event listener for Create a Listing link
+  const openCreateListingModalBtn = document.getElementById(
+    "openCreateListingModalBtn"
+  );
+  if (openCreateListingModalBtn) {
+    openCreateListingModalBtn.addEventListener("click", function (event) {
+      if (!isAuthenticated()) {
+        event.preventDefault();
+        redirectToLogin("/index.html"); // Redirect back to the main page after login
+      } else {
+        document.getElementById("createListingModal").style.display = "block";
       }
     });
   }

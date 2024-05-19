@@ -24,3 +24,14 @@ export function removeToken() {
 
 // Retrieve the access token when making API requests
 export const token = loadToken();
+
+
+export function isAuthenticated() {
+  return !!localStorage.getItem("accessToken");
+}
+
+export function redirectToLogin(redirectUrl) {
+  window.location.href = `/html/login.html?redirect=${encodeURIComponent(
+    redirectUrl
+  )}`;
+}

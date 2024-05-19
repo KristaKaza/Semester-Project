@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="/dist/css/index.css">
     <script src="/js/pages/logout.js" type="module" defer></script>
     <script src="/js/pages/specificList.js" type="module" defer></script>
+    <script src="/js/listing.js/createListing.js" type="module" defer></script>
 
 </head>
 
@@ -28,8 +29,8 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="/index.html">Find&Bid</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -38,13 +39,18 @@
                             <a class="nav-link active" aria-current="page" href="/index.html">Listings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="/html/myProfile.html">My Profile</a>
+                            <a id="myProfileLink" class="nav-link active" href="/html/myProfile.html">My Profile</a>
                         </li>
                         <li class="nav-item">
                             <a id="openCreateListingModalBtn" class="nav-link active" style="cursor: pointer;">Create a
                                 Listing</a>
                         </li>
                     </ul>
+                    <form class="d-flex" id="searchForm">
+                        <input class="form-control me-2" type="search" placeholder="Search" id="searchQuery"
+                            aria-label="Search">
+                        <button class="btn btn-outline-primary me-3" type="submit">Search</button>
+                    </form>
                     <a id="logout">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                             class="bi bi-box-arrow-right" viewBox="0 0 16 16">
@@ -58,22 +64,40 @@
         </nav>
     </header>
     <!-- Create Listing Modal -->
-    <div id="createListingModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <!-- Modal content -->
-            <form id="createListingForm">
-                <input type="text" id="listingTitle" placeholder="Title" required><br>
-                <input type="date" id="listingDeadline" required><br>
-                <textarea id="listingDescription" placeholder="Description" required></textarea><br>
-                <div class="mb-3">
-                    <label for="listingImageInput" class="form-label">Image URL</label>
-                    <input type="text" class="form-control" id="listingImageInput">
+    <div id="createListingModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create a Listing</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <!-- Buttons for form submission and cancel -->
-                <button type="submit">Post</button>
-                <button type="button" id="cancelCreateListingBtn">Cancel</button>
-            </form>
+                <!-- Modal content -->
+                <div class="modal-body">
+                    <form id="createListingForm">
+                        <div class="mb-3">
+                            <label for="listingTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="listingTitle" placeholder="Title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="listingDeadline" class="form-label">Deadline</label>
+                            <input type="date" class="form-control" id="listingDeadline" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="listingDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="listingDescription" placeholder="Description"
+                                required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="listingImageInput" class="form-label">Image URL</label>
+                            <input type="text" class="form-control" id="listingImageInput">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Post</button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     <div id="post-details-container"></div>

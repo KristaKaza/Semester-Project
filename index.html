@@ -39,7 +39,7 @@
                             <a class="nav-link active" aria-current="page" href="/index.html">Listings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="/html/myProfile.html">My Profile</a>
+                            <a id="myProfileLink" class="nav-link active" href="/html/myProfile.html">My Profile</a>
                         </li>
                         <li class="nav-item">
                             <a id="openCreateListingModalBtn" class="nav-link active" style="cursor: pointer;">Create a
@@ -63,24 +63,42 @@
         </nav>
     </header>
     <!-- Create Listing Modal -->
-    <div id="createListingModal" class="modal">
+<div id="createListingModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h5 class="modal-title">Create a Listing</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <!-- Modal content -->
-            <form id="createListingForm">
-                <input type="text" id="listingTitle" placeholder="Title" required><br>
-                <input type="date" id="listingDeadline" required><br>
-                <textarea id="listingDescription" placeholder="Description" required></textarea><br>
-                <div class="mb-3">
-                    <label for="listingImageInput" class="form-label">Image URL</label>
-                    <input type="text" class="form-control" id="listingImageInput">
-                </div>
-                <!-- Buttons for form submission and cancel -->
-                <button type="submit">Post</button>
-                <button type="button" id="cancelCreateListingBtn">Cancel</button>
-            </form>
+            <div class="modal-body">
+                <form id="createListingForm">
+                    <div class="mb-3">
+                        <label for="listingTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="listingTitle" placeholder="Title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="listingDeadline" class="form-label">Deadline</label>
+                        <input type="date" class="form-control" id="listingDeadline" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="listingDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="listingDescription" placeholder="Description"
+                            required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="listingImageInput" class="form-label">Image URL</label>
+                        <input type="text" class="form-control" id="listingImageInput">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Post</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+</div>
     <main>
         <h1 class="text-center mt-4">Listings</h1>
         <div id="listings-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3"></div>
