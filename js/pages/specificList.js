@@ -26,7 +26,22 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.error("Error fetching profile data:", profileError);
         displayErrorMessage("Failed to fetch user profile details.");
       }
-    } 
+    }
+
+    // Add search functionality
+    const searchForm = document.getElementById("searchForm");
+    if (searchForm) {
+      searchForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const query = document.getElementById("searchQuery").value;
+        try {
+          const listings = await searchListings(query);
+          displaySearchResults(listings);
+        } catch (error) {
+          console.error("Error fetching search results:", error);
+        }
+      });
+    }
   } catch (error) {
     console.error("Error fetching and displaying post details:", error);
     displayErrorMessage("Failed to load post details.");
@@ -312,3 +327,4 @@ function displayErrorMessage(message) {
 
   postDetailsContainer.appendChild(errorElement);
 }
+

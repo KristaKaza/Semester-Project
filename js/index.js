@@ -16,7 +16,8 @@ export const API_SINGLE_LISTING = (postId) =>
 export const API_CREATE_LISTING = "/auction/listings"; //post
 export const API_BID = (postId) =>
   `${API_BASE}/auction/listings/${postId}/bids?_bids=true`;
-export const API_SEARCH = API_BASE + "/auction/listings/search?q=<query>"; //search listing title or descrtiption
+export const API_SEARCH = (query) =>
+  `${API_BASE}/auction/listings/search?_bids=true&q=${query}`;
 export const API_BID_PROFILE = (profileName) => {
   return `${API_BASE}${BIDS_BY_PROFILE_ENDPOINT}${profileName}/bids`;
 };

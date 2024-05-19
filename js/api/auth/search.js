@@ -1,27 +1,25 @@
-import { API_SEARCH, API_KEY } from "../../../index.js";
-import { token } from "../../auth/token.js";
+import { API_SEARCH, API_KEY } from "../../index.js";
+import { loadToken } from "../auth/token.js";
 
-async function searchListings() {
-  const query = document.getElementById("searchQuery").value;
-  try {
-    const listings = await getListingsFromSearch(query);
-    console.log(listings);
-  } catch (error) {
-    console.error("Failed to fetch listings:", error);
-  }
-}
+// Function to search listings
+export async function searchListings(query) {
+  const token = loadToken();
 
-async function getListingsFromSearch(query) {
-  const url = API_SEARCH() + `?query=${query}`;
+  const url = API_SEARCH(query);
+  console.log("Searching listings with URL:", url);
+
   const response = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
       "X-Noroff-API-Key": API_KEY,
     },
   });
+
   if (!response.ok) {
-    throw new Error("Could not load posts");
+    throw new Error("Could not fetch search results");
   }
+
   const result = await response.json();
   return result.data;
 }

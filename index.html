@@ -20,8 +20,7 @@
     <script src="/js/pages/listings.js" type="module" defer></script>
     <script src="/js/pages/logout.js" type="module" defer></script>
     <script src="/js/listing.js/createListing.js" type="module" defer></script>
-        <script src="/js/api/auth/login.js" type="module" defer></script>
-
+    <script src="/js/api/auth/login.js" type="module" defer></script>
 </head>
 
 <body>
@@ -47,9 +46,8 @@
                                 Listing</a>
                         </li>
                     </ul>
-                    <form class="d-flex" onsubmit="searchListings(); return false;">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                            id="searchQuery">
+                    <form class="d-flex" id="searchForm">
+                        <input class="form-control me-2" type="search" placeholder="Search" id="searchQuery" aria-label="Search">
                         <button class="btn btn-outline-primary me-3" type="submit">Search</button>
                     </form>
                     <a id="logout">
@@ -81,7 +79,6 @@
                 <button type="submit">Post</button>
                 <button type="button" id="cancelCreateListingBtn">Cancel</button>
             </form>
-
         </div>
     </div>
     <main>

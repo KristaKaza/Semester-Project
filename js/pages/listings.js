@@ -1,4 +1,5 @@
 import { getAllListings } from "../api/auth/listings.js/listings-api.js";
+import { searchListings } from "../api/auth/search.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
   let page = 1;
@@ -19,12 +20,33 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   loadMoreButton.click();
+
+  // Add search functionality
+  const searchForm = document.getElementById("searchForm");
+  if (searchForm) {
+    searchForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const query = document.getElementById("searchQuery").value;
+      try {
+        const listings = await searchListings(query);
+        displayListings(listings);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      }
+    });
+  }
 });
 
-async function displayListings(listings) {
+function displayListings(listings) {
   const listingsContainer = document.getElementById("listings-container");
   listingsContainer.innerHTML = "";
-  listingsContainer.classList.add("row");
+  listingsContainer.classList.add(
+    "row",
+    "row-cols-1",
+    "row-cols-md-2",
+    "row-cols-lg-3",
+    "g-3"
+  );
 
   for (const listing of listings) {
     const postCard = document.createElement("div");
@@ -132,29 +154,29 @@ async function displayListings(listings) {
     deadlineDate.innerHTML = `Ends at: ${formatDeadline(listing.endsAt)}`;
     cardInner.appendChild(deadlineDate);
 
-  const viewMoreButton = document.createElement("button");
-  viewMoreButton.classList.add("btn", "btn-secondary");
-  viewMoreButton.textContent = "View More";
- viewMoreButton.addEventListener("click", () => {
-   if (isLoggedIn()) {
-     window.location.href = `/html/singlePost.html?id=${
-       listing.id
-     }&title=${encodeURIComponent(listing.title)}`;
-   } else {
-     window.location.href =
-       "/html/login.html?redirect=" +
-       encodeURIComponent(
-         `/html/singlePost.html?id=${listing.id}&title=${listing.title}`
-       );
-   }
- });
-  cardInner.appendChild(viewMoreButton);
+    const viewMoreButton = document.createElement("button");
+    viewMoreButton.classList.add("btn", "btn-secondary");
+    viewMoreButton.textContent = "View More";
+    viewMoreButton.addEventListener("click", () => {
+      if (isLoggedIn()) {
+        window.location.href = `/html/singlePost.html?id=${
+          listing.id
+        }&title=${encodeURIComponent(listing.title)}`;
+      } else {
+        window.location.href =
+          "/html/login.html?redirect=" +
+          encodeURIComponent(
+            `/html/singlePost.html?id=${listing.id}&title=${listing.title}`
+          );
+      }
+    });
+    cardInner.appendChild(viewMoreButton);
   }
 }
+
 function isLoggedIn() {
   return !!localStorage.getItem("accessToken");
 }
-
 
 function formatDeadline(dateString) {
   const deadline = new Date(dateString);
@@ -167,5 +189,3 @@ function formatDeadline(dateString) {
   };
   return deadline.toLocaleDateString("en-US", options);
 }
-
-
