@@ -2,6 +2,11 @@ body {
   font-family: Poppins, sans-serif;
   margin: 0 100px 0 100px;
 }
+@media (max-width: 768px) {
+  body {
+    margin: 20px;
+  }
+}
 
 $secondary: #b6845e;
 $tertiary: #cd8d34;

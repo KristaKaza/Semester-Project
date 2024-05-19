@@ -4,12 +4,14 @@ import { getProfileByName } from "../api/auth/profiles/profile.js";
 import { getUserCredits } from "../api/auth/profiles/credits-api.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
+  let postDetails;
+
   try {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("id");
 
     // Fetch the post details using postId
-    const postDetails = await getPostDetails(postId);
+    postDetails = await getPostDetails(postId);
     displayPostDetails(postDetails);
     displayBids(postDetails.data.bids ?? []);
 
@@ -27,25 +29,56 @@ document.addEventListener("DOMContentLoaded", async function () {
         displayErrorMessage("Failed to fetch user profile details.");
       }
     }
-
-    // Add search functionality
-    const searchForm = document.getElementById("searchForm");
-    if (searchForm) {
-      searchForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
-        const query = document.getElementById("searchQuery").value;
-        try {
-          const listings = await searchListings(query);
-          displaySearchResults(listings);
-        } catch (error) {
-          console.error("Error fetching search results:", error);
-        }
-      });
-    }
   } catch (error) {
     console.error("Error fetching and displaying post details:", error);
     displayErrorMessage("Failed to load post details.");
   }
+
+  // Add event listener for bid button
+  document
+    .querySelector(".btn-primary")
+    .addEventListener("click", async function () {
+      const bidInput = document.querySelector(".bid-container input");
+      const bidAmount = Number(bidInput.value);
+
+      // Clear previous error message
+      const errorMessageElement = document.querySelector(
+        ".bid-container .text-danger"
+      );
+      errorMessageElement.textContent = "";
+
+      try {
+        const userName = localStorage.getItem("userName");
+        const userCredits = await getUserCredits(userName);
+
+        // Check if bidAmount is greater than the last bid
+        const lastBidAmount =
+          postDetails.data.bids.length > 0
+            ? postDetails.data.bids.slice(-1)[0].amount
+            : 0;
+
+        if (bidAmount <= lastBidAmount) {
+          errorMessageElement.textContent =
+            "Amount is not valid. Please bid more than the last bidder.";
+          return;
+        }
+
+        if (bidAmount > userCredits.credits) {
+          errorMessageElement.textContent =
+            "You do not have enough credits for this bid.";
+          return;
+        }
+
+        // Attempt to make the bid
+        await makeBid(postDetails.data.id, bidAmount);
+        // Fetch updated post details and display bids again
+        postDetails = await getPostDetails(postDetails.data.id);
+        displayBids(postDetails.data.bids);
+        bidInput.value = "";
+      } catch (error) {
+        errorMessageElement.textContent = error.message;
+      }
+    });
 });
 
 function displayPostDetails(postDetails) {
@@ -196,64 +229,6 @@ function displayPostDetails(postDetails) {
   errorMessageElement.classList.add("card-text", "text-danger");
   bidContainer.appendChild(errorMessageElement);
 
-  // Add event listener for bid button
-  bidButton.addEventListener("click", async function () {
-    const bidAmount = Number(bidInput.value);
-
-    // Clear previous error message
-    errorMessageElement.textContent = "";
-
-    // Check if bidAmount is a valid number
-    if (!isNaN(bidAmount)) {
-      // Check if auction has ended
-      const currentTime = new Date();
-      const auctionEndTime = new Date(postDetails.data.endsAt);
-      if (currentTime > auctionEndTime) {
-        errorMessageElement.textContent =
-          "This auction has ended so you can no longer make a bid";
-        return;
-      }
-
-      // Check if bidAmount is greater than the last bid
-      const lastBidAmount =
-        postDetails.data.bids.length > 0
-          ? postDetails.data.bids.slice(-1)[0].amount
-          : 0;
-      if (bidAmount <= lastBidAmount) {
-        errorMessageElement.textContent =
-          "The amount of your bid is not enough. Please bid more than the last bid for this auction";
-        return;
-      }
-
-      // Fetch user's credits
-      const userName = localStorage.getItem("userName");
-      try {
-        const userCredits = await getUserCredits(userName);
-        if (bidAmount > userCredits.credits) {
-          errorMessageElement.textContent = "Not enough credits.";
-          return;
-        }
-      } catch (error) {
-        errorMessageElement.textContent = "Not enough credits.";
-        return;
-      }
-
-      // Make the bid if all checks pass
-      try {
-        const response = await makeBid(postDetails.data.id, bidAmount);
-        displayBids(response.data.bids);
-        bidInput.value = "";
-      } catch (error) {
-        console.error("Error making bid:", error);
-        errorMessageElement.textContent = "Failed to make bid.";
-      }
-    } else {
-      errorMessageElement.textContent =
-        "Invalid bid amount. Please enter a valid number.";
-    }
-  });
-
-  // Append elements to the card body
   cardBody.appendChild(titleElement);
   cardBody.appendChild(sellerUsername);
   cardBody.appendChild(bidCount);
@@ -267,17 +242,15 @@ function displayPostDetails(postDetails) {
  * @param {{ amount: number, bidder: {name: string}}[]} bids
  */
 function displayBids(bids) {
-  const bidsContainer = document.createElement("div");
-  bidsContainer.classList.add("card", "my-3");
+  const postDetailsContainer = document.getElementById(
+    "post-details-container"
+  );
+  const existingBids = postDetailsContainer.querySelectorAll(".bid-wrapper");
 
-  const bidsCardBody = document.createElement("div");
-  bidsCardBody.classList.add("card-body");
+  // Remove existing bids if any
+  existingBids.forEach((bid) => bid.remove());
 
-  const bidsTitle = document.createElement("h2");
-  bidsTitle.classList.add("card-title");
-  bidsTitle.textContent = "Bids";
-
-  bidsCardBody.appendChild(bidsTitle);
+  const bidsCardBody = document.querySelector(".card-body");
 
   // Extract bidder information
   bids.forEach((bid) => {
@@ -307,12 +280,6 @@ function displayBids(bids) {
     bidWrapper.appendChild(bidElement);
     bidsCardBody.appendChild(bidWrapper);
   });
-
-  bidsContainer.appendChild(bidsCardBody);
-  const postDetailsContainer = document.getElementById(
-    "post-details-container"
-  );
-  postDetailsContainer.appendChild(bidsContainer);
 }
 
 function displayErrorMessage(message) {
@@ -327,4 +294,3 @@ function displayErrorMessage(message) {
 
   postDetailsContainer.appendChild(errorElement);
 }
-

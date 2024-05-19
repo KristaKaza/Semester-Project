@@ -4,6 +4,11 @@ body {
   margin: 0 100px 0 100px;
 }
 
+@media (max-width: 768px) {
+  body {
+    margin: 20px;
+  }
+}
 .btn-secondary {
   background-color: #b6845e;
   border-color: #b6845e;
@@ -38,11 +43,6 @@ body {
   row-gap: 10px;
 }
 
-/* .media-image img {
-  width: 100%;
-  object-fit: cover;
-  height: 400px;
-} */
 .my-listing-item {
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);

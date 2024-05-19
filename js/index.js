@@ -21,4 +21,5 @@ export const API_SEARCH = (query) =>
 export const API_BID_PROFILE = (profileName) => {
   return `${API_BASE}${BIDS_BY_PROFILE_ENDPOINT}${profileName}/bids`;
 };
-export const API_CREDITS = `${API_BASE}/auction/profiles/{name}/credits`;
+export const API_CREDITS = (userName) =>
+  `${API_BASE}/auction/profiles/${userName}/credits`;

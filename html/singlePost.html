@@ -18,6 +18,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/dist/css/index.css">
     <script src="/js/pages/logout.js" type="module" defer></script>
+    <script src="/js/pages/specificList.js" type="module" defer></script>
+
 </head>
 
 <body>
@@ -43,10 +45,6 @@
                                 Listing</a>
                         </li>
                     </ul>
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-primary me-3" type="submit">Search</button>
-                    </form>
                     <a id="logout">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                             class="bi bi-box-arrow-right" viewBox="0 0 16 16">
@@ -78,9 +76,11 @@
             </form>
         </div>
     </div>
-    <div id="post-details-container">
+    <div id="post-details-container"></div>
+    <div id="bids-container" class="card my-3">
+
     </div>
-    <script src="/js/pages/specificList.js" type="module" defer></script>
+    </div>
 </body>
 
 </html>
